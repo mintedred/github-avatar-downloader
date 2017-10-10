@@ -13,19 +13,19 @@ function getRepoContributors(repoOwner, repoName, cb) {
     console.log('Please enter valid values for repo owner and repo name.');
     return;
   }
-  var requestURL = 'https://'+ 'api.github.com/repos/' + repoOwner + '/' + repoName + '/contributors';
+  var requestURL = 'https://'+ GITHUB_USER + ':' + GITHUB_T + '@api.github.com/repos/' + repoOwner + '/' + repoName + '/contributors';
+
+  // GitHub requires a "User-Agent" header
   var requestLink = {
     headers: {
-      'User-Agent': 'GitHub Avatar Downloader - Student Project',
-      "Authorization": "token " + GITHUB_T
+      'User-Agent': 'GitHub Avatar Downloader - Student Project'
     },
     url: requestURL
   };
 
   request.get(requestLink, function (error, response, body) {
-      // console.log('statusCode:', response && response.statusCode);
       if (error) {
-        cb(error);
+        console.log('error:', error);
       } else {
         cb("", JSON.parse(body)); 
       }
@@ -46,9 +46,9 @@ getRepoContributors(repoOwner, repoName, function(err, result) {
   if (err) {
     console.log("Errors:", err);
   } else {
-    console.log("Images downloaded.");
     result.forEach(function(user) {
       downloadImageByURL(user.avatar_url, "./avatars/" + user.login + '.jpg');
     });
+    console.log("Images downloaded.");
   }
 });
