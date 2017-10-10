@@ -8,6 +8,7 @@ var repoName = process.argv[3];
 
 console.log('Welcome to the GitHub Avatar Downloader!');
 
+// cb is a function that takes 2 parameters: err (that is set to a string describing the error, otherwise it is false), and result (an array of objects with user information)
 function getRepoContributors(repoOwner, repoName, cb) {
   if (!repoOwner || !repoName) {
     console.log('Please enter valid values for repo owner and repo name.');
@@ -27,7 +28,7 @@ function getRepoContributors(repoOwner, repoName, cb) {
       if (error) {
         console.log('error:', error);
       } else {
-        cb("", JSON.parse(body)); 
+        cb(false, JSON.parse(body)); 
       }
     });
 
