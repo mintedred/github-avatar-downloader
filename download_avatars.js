@@ -26,21 +26,21 @@ function getRepoContributors(repoOwner, repoName, cb) {
 
 }
 
-getRepoContributors("jquery", "jquery", function(err, result) {
-  if (err) {
-    console.log("Errors:", err);
-  } else {
-    console.log("Result:");
-    result.forEach(function(user) {
-      console.log(user.avatar_url);
-    });
-  }
-});
-
 function downloadImageByURL(url, filePath) {
   request.get(url)
     .on('error', function (err) {                          
       throw err; 
     })
-    .pipe(fs.createWriteStream("./"+filePath));
+    .pipe(fs.createWriteStream(filePath));
 }
+
+getRepoContributors("jquery", "jquery", function(err, result) {
+  if (err) {
+    console.log("Errors:", err);
+  } else {
+    console.log("Images downloaded.");
+    result.forEach(function(user) {
+      downloadImageByURL(user.avatar_url, "./avatars/" + user.login + '.jpg');
+    });
+  }
+});
